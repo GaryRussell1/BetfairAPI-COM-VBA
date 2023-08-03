@@ -157,9 +157,25 @@ Sub testGetBetStatus()
     End If
 End Sub
 
+Private Sub ba_betsCancelled(bets As Variant, ByVal tabIndex As Long)
+    Dim i As Integer, b As Bet
+    For i = 0 To UBound(bets)
+        Set b = bets(i)
+        Debug.Print "Bet ref:" & b.ref & " cancelled, size cancelled:" & b.sizeCancelled
+    Next
+End Sub
+
 Private Sub ba_getBetStatusComplete(ByVal bets As Variant)
     For i = 0 To UBound(bets)
         Debug.Print bets(i).ref & "," & bets(i).betStatus & " (async)"
+    Next
+End Sub
+
+Private Sub ba_betsUpdated(bets As Variant, ByVal betsCount As Long, ByVal tabIndex As Long, ByVal marketId As Long, ByVal marketName As String, ByVal port As String)
+    Dim i As Integer, b As Bet
+    For i = 0 To betsCount - 1
+        Set b = bets(i)
+        Debug.Print RightPad(b.selectionName, 50) & vbTab & RightPad(b.betType, 12) & vbTab & RightPad(b.matched, 12)
     Next
 End Sub
 
@@ -345,6 +361,14 @@ Private Sub testGetPrices()
     Next
 End Sub
 
+Private Sub ba_pricesUpdated(prices As Variant, ByVal pricesCount As Long, ByVal tabIndex As Long, ByVal marketId As Long, ByVal marketName As String, ByVal port As String)
+    'Dim i As Integer, p As Price
+    'For i = 0 To pricesCount - 1
+    '    Set p = prices(i)
+    '    Debug.Print RightPad(p.Selection, 50) & vbTab & RightPad(p.backOdds1, 12) & vbTab & RightPad(p.layOdds1, 12)
+    'Next
+End Sub
+
 Private Sub testGetUserName()
     initBA
     Debug.Print ba.getUserName
@@ -426,3 +450,4 @@ Private Sub testSetQuickPickListAutoSelect()
         Debug.Print "ERROR"
     End If
 End Sub
+
